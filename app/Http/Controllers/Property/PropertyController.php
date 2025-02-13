@@ -113,5 +113,4 @@ class PropertyController extends Controller
             'property' => new EditPropertyResource($property),
         ], 200);
     }
-
 }

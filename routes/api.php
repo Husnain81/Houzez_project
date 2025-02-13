@@ -53,7 +53,7 @@ Route::prefix('v1')->group(function () {
 
             // Sub-properties related routes
             Route::controller(SubPropertiesController::class)->group(function () {
-                Route::post('/{property}/sub-properties/{subProperty?}',  'createOrUpdate');
+                Route::post('/{property}/sub-properties', 'storeOrUpdateSubProperties');
             });
 
             // Sub-properties related routes
