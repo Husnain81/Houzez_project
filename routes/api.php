@@ -10,6 +10,8 @@ use App\Http\Controllers\Property\FloorPlansController;
 use App\Http\Controllers\Property\PropertyAttachmentController;
 use App\Http\Controllers\Property\AppPropertyController;
 use App\Http\Controllers\StripePayment\PlanController;
+use App\Http\Controllers\StripePayment\SubscriptionController;
+use App\Http\Controllers\StripePayment\InvoicesController;
 
 Route::prefix('v1')->group(function () {
     // Authentication routes
@@ -24,6 +26,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('properties')->controller(AppPropertyController::class)->group(function () {
             Route::get('/get-featured', 'getFeaturedProperties');
             Route::get('/get-searched-and-filtered', 'getSearchedAndFilteredProperties');
+            Route::get('/get-all', 'getAllProperties');
         });
     });
 
@@ -86,8 +89,26 @@ Route::prefix('v1')->group(function () {
 
         // Stripe-payments related routes
         Route::prefix('stripe-payments')->group(function () {
-            Route::post('/store-plan', [PlanController::class, 'storePlan']);
-            Route::post('/update-plan/{plan}', [PlanController::class, 'updatePlan']);
+            // Plans related routes
+            Route::controller(PlanController::class)->group(function () {
+                Route::get('/get-all-plans', 'getAllPlans');
+                Route::get('/get-select-plans', 'getSelectPlans');
+                Route::post('/store-plan', 'storePlan');
+                Route::post('/update-plan/{plan}', 'updatePlan');
+                Route::post('/delete-plan/{plan}', 'deletePlan');
+            });
+
+            // Subscription related routes
+            Route::controller(SubscriptionController::class)->group(function () {
+                Route::get('/checkout/{plan}', 'checkout');
+                Route::post('/process', 'process');
+                Route::get('/get-user-subscriptions', 'getUserSubscriptions');
+                Route::get('/cancel-subscription', 'cancelSubscription');
+                Route::get('/resume-subscription', 'resumeSubscription');
+            });
+
+            // Invoices related routes
+            Route::get('/invoices',[InvoicesController::class,'invoices']);
         });
     });
 });
