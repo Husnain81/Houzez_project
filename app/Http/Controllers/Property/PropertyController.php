@@ -80,7 +80,7 @@ class PropertyController extends Controller
         } catch (\Exception $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
-            ], $e->getCode() ?: 500);
+            ], is_int($e->getCode()) && $e->getCode() >= 100 && $e->getCode() < 600 ? $e->getCode() : 500);
         }
     }
 

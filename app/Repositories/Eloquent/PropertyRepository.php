@@ -76,7 +76,7 @@ class PropertyRepository implements PropertyRepositoryInterface
         $data['contact_information'] = $data['contact_information'] ?? [];
 
         if ($id) {
-            $property = Property::find($id);
+            $property = Property::find(id: $id);
             if (!$property) {
                 throw new \Exception('Property not found.', 404);
             }
